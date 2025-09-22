@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DJ3 Restaurant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {font-family:'Poppins',sans-serif; background:#0e0e0e; color:#f1f1f1; scroll-behavior:smooth;}
+    h1,h2,h3 {font-family:'Playfair Display',serif;}
+
+    /* Navbar */
+    nav {position:fixed; top:0; width:100%; background:rgba(20,20,20,0.85); display:flex; justify-content:space-between; align-items:center; padding:15px 10%; z-index:1000; backdrop-filter:blur(10px);}
+    nav h1 {color:#ffcc00; font-size:1.8rem; letter-spacing:2px;}
+    nav a {color:#f1f1f1; text-decoration:none; margin-left:25px; font-weight:500; transition:0.3s;}
+    nav a:hover {color:#ffcc00;}
+
+    /* Hero */
+    header {height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:0 20px;
+      background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), 
+      url('https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1600&q=80'); 
+      background-size:cover; background-position:center;}
+    header h1 {font-size:4rem; color:#ffcc00; animation:fadeInDown 1.2s ease;}
+    header p {margin-top:15px; font-size:1.3rem; max-width:650px; animation:fadeInUp 1.5s ease;}
+    .btn {margin-top:25px; padding:14px 28px; background:#ffcc00; color:#111; font-weight:600; border:none; border-radius:30px; cursor:pointer; transition:0.3s;}
+    .btn:hover {background:#e6b800; color:#fff;}
+
+    /* Sections */
+    section {padding:90px 10%; text-align:center;}
+    section h2 {color:#ffcc00; font-size:2.2rem; margin-bottom:20px;}
+
+    /* About */
+    .about p {max-width:850px; margin:auto; line-height:1.7; color:#ddd;}
+
+    /* Menu Highlights */
+    .menu-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; margin-top:40px;}
+    .menu-item {background:rgba(255,255,255,0.05); border-radius:15px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,0.5); transition:0.4s; backdrop-filter:blur(10px);}
+    .menu-item img {width:100%; height:220px; object-fit:cover;}
+    .menu-item h3 {padding:15px; color:#ffcc00;}
+    .menu-item p {padding:0 15px 20px; font-size:0.9rem; color:#ccc;}
+    .menu-item:hover {transform:translateY(-10px); box-shadow:0 12px 25px rgba(0,0,0,0.7);}
+
+    /* Specials */
+    .specials {background:linear-gradient(135deg,#1a1a1a,#111); border-radius:20px; padding:60px 20px; margin-top:60px;}
+    .specials h2 {color:#ffcc00; margin-bottom:20px;}
+    .specials p {max-width:750px; margin:auto; color:#ccc;}
+
+    /* Reservation */
+    .reserve {margin-top:60px;}
+    .reserve button {margin-top:20px;}
+
+    /* Popup Form */
+    .popup-overlay {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.7); display:none; justify-content:center; align-items:center; z-index:2000;
+    }
+    .popup {
+      background:rgba(30,30,30,0.9); padding:30px; border-radius:20px; max-width:400px; width:90%; 
+      box-shadow:0 10px 30px rgba(0,0,0,0.8); text-align:left; backdrop-filter:blur(10px); animation:fadeInUp 0.5s ease;
+    }
+    .popup h2 {color:#ffcc00; margin-bottom:15px; text-align:center;}
+    .popup label {display:block; margin:10px 0 5px; color:#fff;}
+    .popup input, .popup select {
+      width:100%; padding:10px; border:none; border-radius:8px; margin-bottom:15px; font-size:1rem;
+    }
+    .popup button {
+      width:100%; padding:12px; border:none; border-radius:8px; background:#ffcc00; color:#111; font-weight:600; cursor:pointer;
+    }
+    .popup button:hover {background:#e6b800; color:#fff;}
+    .close-btn {
+      position:absolute; top:20px; right:25px; font-size:1.5rem; color:#fff; cursor:pointer;
+    }
+
+    /* Footer */
+    footer {background:#111; color:#aaa; padding:25px; text-align:center; margin-top:80px;}
+    footer a {color:#ffcc00; text-decoration:none;}
+
+    /* Animations */
+    @keyframes fadeInDown {from{opacity:0; transform:translateY(-50px);} to{opacity:1; transform:translateY(0);}}
+    @keyframes fadeInUp {from{opacity:0; transform:translateY(50px);} to{opacity:1; transform:translateY(0);}}
+
+    /* Responsive */
+    @media(max-width:768px){
+      header h1 {font-size:2.8rem;}
+      header p {font-size:1rem;}
+      nav {padding:15px 5%;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <h1>DJ3</h1>
+    <div>
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#specials">Specials</a>
+      <a href="#reserve">Reserve</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header>
+    <h1>Welcome to DJ3</h1>
+    <p>Where world-class dining meets modern ambiance. Experience flavor, style, and unforgettable moments.</p>
+    <button class="btn" id="scrollMenu">Discover Menu</button>
+  </header>
+
+  <!-- About -->
+  <section id="about" class="about">
+    <h2>About DJ3</h2>
+    <p>
+      DJ3 is not just a restaurant — it’s an experience. Our chefs bring global flavors to your table, blending
+      tradition with innovation. Whether you’re here for a fine dinner, a family gathering, or a celebration,
+      DJ3 sets the perfect stage with its modern interiors, curated menu, and soulful vibes.
+    </p>
+  </section>
+
+  <!-- Menu -->
+  <section id="menu">
+    <h2>Signature Dishes</h2>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <img src="PASTA.jpg" alt="RED SAUCE PASTA">
+        <h3>Red Sauce Pasta</h3>
+        <p>Red sauce pasta made with tomatoes, onions, garlic,spices & herbs. It's a favorite with toddlers & kids - mildly spiced & tastes delicious!</p>
+      </div>
+      <div class="menu-item">
+        <img src="MOMO.jpg" alt="Momos">
+        <h3>Chicken Burst Momos</h3>
+        <p>Filled with mashed and buttery chicken</p>
+      </div>
+      <div class="menu-item">
+        <img src="Baby Corn.jpg" alt="Baby Corn">
+        <h3>Schezwan Baby Corn</h3>
+        <p>The perfect starter to kick off your meal - crishpy and flavour corns</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specials -->
+  <section id="specials" class="specials">
+    <h2>Why Choose DJ3?</h2>
+    <p>
+      At DJ3, dining is more than food — it’s art. From live DJ nights to themed gourmet dinners, 
+      we create unforgettable experiences. Our fusion of fine dining and vibrant nightlife makes DJ3 
+      a destination for those who love elegance, taste, and energy in one place.
+    </p>
+  </section>
+
+  <!-- Reservation -->
+  <section id="reserve" class="reserve">
+    <h2>Book a Table</h2>
+    <p>Reserve your spot today and indulge in the DJ3 experience.</p>
+    <button class="btn" id="openForm">Reserve Now</button>
+  </section>
+
+  <!-- Popup Reservation Form -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <span class="close-btn" id="closePopup">&times;</span>
+      <h2>Reserve a Table</h2>
+      <form>
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your Name" required>
+
+        <label for="date">Date</label>
+        <input type="date" id="date" required>
+
+        <label for="guests">Guests</label>
+        <select id="guests" required>
+          <option value="" disabled selected>Select Guests</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3-4</option>
+          <option>5-6</option>
+          <option>7+</option>
+        </select>
+
+        <button type="submit">Confirm Reservation</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 DJ3 Restaurant | Designed with ❤️</p>
+  </footer>
+
+  <script>
+    // Smooth scroll to menu
+    document.getElementById("scrollMenu").addEventListener("click", () => {
+      document.getElementById("menu").scrollIntoView({behavior: "smooth"});
+    });
+
+    // Popup controls
+    const openForm = document.getElementById("openForm");
+    const popupOverlay = document.getElementById("popupOverlay");
+    const closePopup = document.getElementById("closePopup");
+
+    openForm.addEventListener("click", () => {
+      popupOverlay.style.display = "flex";
+    });
+
+    closePopup.addEventListener("click", () => {
+      popupOverlay.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === popupOverlay) {
+        popupOverlay.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>

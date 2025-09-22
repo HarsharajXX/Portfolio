@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Moonlight</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #0a1a2f;
+      color: #f5f5f5;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      color: #d4af37;
+      font-size: 28px;
+    }
+
+    nav a {
+      color: #f5f5f5;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #d4af37;
+    }
+
+    .hero {
+      height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('background.avif') no-repeat center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      padding: 20px;
+    }
+
+    .hero h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 60px;
+      color: #d4af37;
+      text-shadow: 0px 0px 15px rgba(212,175,55,0.8);
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      max-width: 700px;
+      margin-bottom: 30px;
+    }
+
+    .hero button {
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      background: #d4af37;
+      color: #0a1a2f;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .hero button:hover {
+      background: #f5f5f5;
+      color: #0a1a2f;
+    }
+
+    .section {
+      padding: 80px 50px;
+      text-align: center;
+    }
+
+    .section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: #d4af37;
+      margin-bottom: 20px;
+    }
+
+    .rooms {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .room {
+      background: #111c2d;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    }
+
+    .room img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .room h4 {
+      font-size: 22px;
+      margin: 15px;
+      color: #d4af37;
+    }
+
+    .room p {
+      margin: 0 15px 20px;
+      font-size: 15px;
+      color: #ddd;
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 3000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px rgba(0,0,0,0.8);
+    }
+
+    .lightbox .close, .lightbox .prev, .lightbox .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #d4af37;
+      color: #0a1a2f;
+      border: none;
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+
+    .lightbox .close {
+      top: 20px;
+      right: 30px;
+      transform: none;
+    }
+
+    .lightbox .prev {
+      left: 20px;
+    }
+
+    .lightbox .next {
+      right: 20px;
+    }
+
+    footer {
+      background: #000;
+      text-align: center;
+      padding: 20px;
+      color: #aaa;
+    }
+
+    /* Reservation Popup */
+    .reservation-popup {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .reservation-content {
+      background: #111c2d;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0px 0px 15px rgba(0,0,0,0.7);
+      text-align: center;
+    }
+
+    .reservation-content h3 {
+      color: #d4af37;
+      margin-bottom: 20px;
+    }
+
+    .reservation-content input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .reservation-content button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background: #d4af37;
+      color: #0a1a2f;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      background: #f44336;
+      margin-top: 10px;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hotel Moonlight</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#rooms">Rooms</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#amenities">Amenities</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Welcome to Hotel Moonlight</h2>
+    <p>Experience luxury, comfort, and elegance under the moonlit skies. A stay that defines premium hospitality.</p>
+    <button onclick="openReservation()">Reserve Now</button>
+  </section>
+
+  <section id="rooms" class="section">
+    <h3>Our Luxury Rooms</h3>
+    <div class="rooms">
+      <div class="room">
+        <img src="Dulex suite.png" alt="Deluxe Room">
+        <h4>Deluxe Suite</h4>
+        <p>Elegant suite with king-size bed, balcony, and moonlight view.</p>
+      </div>
+      <div class="room">
+        <img src="Room.jpg" alt="Luxury Room">
+        <h4>Luxury Room</h4>
+        <p>Premium interiors with golden accents for an unforgettable stay.</p>
+      </div>
+      <div class="room">
+        <img src="presidential-suite.jpg" alt="Presidential Suite">
+        <h4>Presidential Suite</h4>
+        <p>Exclusive experience with a private lounge and top-class service.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="section">
+    <h3>Gallery</h3>
+    <div class="gallery">
+      <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb" alt="Lobby">
+      <img src="restaurent2.jpg" alt="Restaurant">
+      <img src="Spa.jpg" alt="Spa">
+      <img src="pool.avif" alt="Pool">
+    </div>
+  </section>
+
+  <section id="amenities" class="section">
+    <h3>Amenities</h3>
+    <p>Infinity Pool • Spa & Wellness • Fine Dining • Moonlight Bar • Conference Hall</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Hotel Moonlight. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Reservation Popup -->
+  <div id="reservationPopup" class="reservation-popup">
+    <div class="reservation-content">
+      <h3>Reserve Your Stay</h3>
+      <input type="text" placeholder="Your Name">
+      <input type="date">
+      <input type="number" placeholder="Number of Guests">
+      <button>Confirm Reservation</button>
+      <button class="close-btn" onclick="closeReservation()">Close</button>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox">
+    <button class="close" onclick="closeLightbox()">X</button>
+    <button class="prev" onclick="changeImage(-1)">&lt;</button>
+    <img id="lightboxImage" src="">
+    <button class="next" onclick="changeImage(1)">&gt;</button>
+  </div>
+
+  <script>
+    // Reservation Popup
+    function openReservation() {
+      document.getElementById("reservationPopup").style.display = "flex";
+    }
+    function closeReservation() {
+      document.getElementById("reservationPopup").style.display = "none";
+    }
+
+    // Lightbox
+    let currentIndex = 0;
+    const galleryImages = document.querySelectorAll(".gallery img");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+
+    galleryImages.forEach((img, index) => {
+      img.addEventListener("click", () => {
+        currentIndex = index;
+        showImage();
+      });
+    });
+
+    function showImage() {
+      lightbox.style.display = "flex";
+      lightboxImage.src = galleryImages[currentIndex].src;
+    }
+
+    function closeLightbox() {
+      lightbox.style.display = "none";
+    }
+
+    function changeImage(step) {
+      currentIndex = (currentIndex + step + galleryImages.length) % galleryImages.length;
+      showImage();
+    }
+  </script>
+</body>
+</html>
